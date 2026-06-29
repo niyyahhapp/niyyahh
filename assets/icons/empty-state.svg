@@ -1,0 +1,14 @@
+<svg width="184" height="132" viewBox="0 0 184 132" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="34" y="26" width="116" height="80" rx="8" fill="#FFF7EF" stroke="#FFD1DC" stroke-width="2"/>
+  <path d="M92 34C79.5 27.5 62 29.5 50 37.5V91C62.5 84 78.5 84 92 91V34Z" fill="#FFFDF9" stroke="#FF9FB2" stroke-width="2"/>
+  <path d="M92 34C104.5 27.5 122 29.5 134 37.5V91C121.5 84 105.5 84 92 91V34Z" fill="#FFFDF9" stroke="#69D3A7" stroke-width="2"/>
+  <path d="M58 47H80" stroke="#FFD1DC" stroke-width="2" stroke-linecap="round"/>
+  <path d="M58 58H80" stroke="#FFE58F" stroke-width="2" stroke-linecap="round"/>
+  <path d="M104 47H126" stroke="#BFE5FF" stroke-width="2" stroke-linecap="round"/>
+  <path d="M104 58H126" stroke="#FFD1DC" stroke-width="2" stroke-linecap="round"/>
+  <path d="M82 78C73 68 62 71 59 84C72 86 80 84 82 78Z" fill="#69D3A7" fill-opacity="0.55"/>
+  <path d="M102 78C111 68 122 71 125 84C112 86 104 84 102 78Z" fill="#FFE58F" fill-opacity="0.9"/>
+  <path d="M32 18L34.3 23.7L40 26L34.3 28.3L32 34L29.7 28.3L24 26L29.7 23.7L32 18Z" fill="#FF9FB2" fill-opacity="0.68"/>
+  <path d="M154 14L156 19L161 21L156 23L154 28L152 23L147 21L152 19L154 14Z" fill="#FFE58F" fill-opacity="0.92"/>
+  <path d="M150 100L151.6 104.4L156 106L151.6 107.6L150 112L148.4 107.6L144 106L148.4 104.4L150 100Z" fill="#7BC7FF"/>
+</svg>
