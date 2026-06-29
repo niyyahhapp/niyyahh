@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Ayah Canvas helps Muslims create beautiful Qur'an reflection cards for journaling and sharing."
+    />
+    <title>Ayah Canvas | Qur'an Reflection Cards</title>
+    <script>
+      (function () {
+        try {
+          var saved = JSON.parse(localStorage.getItem("ayahCanvasState.v1") || "{}");
+          document.documentElement.dataset.theme = saved.theme || "sage";
+        } catch (error) {
+          document.documentElement.dataset.theme = "sage";
+        }
+      })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+    ></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="site-header" aria-label="Ayah Canvas header">
+        <a class="brand-lockup" href="#" aria-label="Ayah Canvas home">
+          <span class="brand-mark" aria-hidden="true">AC</span>
+          <span>
+            <span class="app-name">Ayah Canvas</span>
+            <span class="app-subtitle">Qur'an reflections, beautifully kept.</span>
+          </span>
+        </a>
+      </header>
+
+      <main aria-label="Ayah Canvas workspace">
+        <section class="hero-section" aria-labelledby="heroTitle">
+          <div class="hero-pattern" aria-hidden="true"></div>
+          <p class="eyebrow">Reflection studio</p>
+          <h1 id="heroTitle">Ayah Canvas</h1>
+          <p>Create beautiful Qur'an reflection cards.</p>
+        </section>
+
+        <section class="app-shell">
+          <section class="preview-panel" aria-labelledby="previewTitle">
+            <div class="preview-heading">
+              <div>
+                <p class="eyebrow">Preview</p>
+                <h2 id="previewTitle">Journal card</h2>
+              </div>
+              <span class="save-pill" id="saveState">Saved</span>
+            </div>
+
+            <div class="preview-stage">
+              <article
+                class="reflection-card theme-sage"
+                id="reflectionCard"
+                aria-label="Reflection card preview"
+                tabindex="0"
+              >
+                <span class="card-pattern top-left" aria-hidden="true"></span>
+                <span class="card-pattern bottom-right" aria-hidden="true"></span>
+
+                <div class="empty-state" id="emptyState">
+                  <img
+                    src="assets/icons/empty-state.svg"
+                    alt=""
+                    width="184"
+                    height="132"
+                    aria-hidden="true"
+                  />
+                  <p>Enter an ayah reference to begin.</p>
+                </div>
+
+                <div class="card-content" id="cardContent" hidden>
+                  <header class="card-header">
+                    <span class="card-surah" id="previewSurahName">Surah</span>
+                    <span class="card-reference" id="previewReference">Qur'an</span>
+                  </header>
+
+                  <p class="card-ayah" id="previewAyah" dir="rtl" lang="ar"></p>
+                  <p class="card-translation" id="previewTranslation"></p>
+                  <span class="reflection-divider" aria-hidden="true"></span>
+                  <p class="card-reflection" id="previewReflection"></p>
+
+                  <footer class="card-footer">Ayah Canvas</footer>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="editor-panel" aria-labelledby="editorTitle">
+            <div class="section-heading">
+              <p class="eyebrow">Editor</p>
+              <h2 id="editorTitle">Find the ayah. Write the reflection.</h2>
+            </div>
+
+            <form class="editor-form" id="reflectionForm">
+              <div class="lookup-card" aria-label="Ayah lookup">
+                <div class="floating-field lookup-field">
+                  <input
+                    id="ayahReference"
+                    name="ayahReference"
+                    data-field="reference"
+                    type="text"
+                    inputmode="text"
+                    placeholder=" "
+                    autocomplete="off"
+                  />
+                  <label for="ayahReference">Ayah reference</label>
+                  <button class="button primary-button lookup-button" id="searchButton" type="button">
+                    Search
+                  </button>
+                </div>
+
+                <div class="lookup-meta" id="lookupStatus" role="status" aria-live="polite">
+                  <span class="spinner" id="lookupSpinner" hidden></span>
+                  <span id="lookupMessage">Try 2:255, 36:58, or 55:13.</span>
+                </div>
+
+                <div class="select-row" aria-label="Select a Surah and Ayah">
+                  <div class="floating-field">
+                    <select id="surahSelect" name="surahSelect"></select>
+                    <label for="surahSelect">Surah</label>
+                  </div>
+                  <div class="floating-field">
+                    <select id="ayahSelect" name="ayahSelect"></select>
+                    <label for="ayahSelect">Ayah</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="loaded-ayah" id="loadedAyah" hidden>
+                <span id="loadedSurah">No ayah loaded</span>
+                <p id="loadedTranslation">Search for an ayah and it will appear in the card.</p>
+              </div>
+
+              <div class="floating-field textarea-field">
+                <div class="label-row">
+                  <label for="reflection">Reflection</label>
+                  <button class="quiet-button" id="promptButton" type="button">Prompt</button>
+                </div>
+                <textarea
+                  id="reflection"
+                  name="reflection"
+                  data-field="reflection"
+                  rows="6"
+                  maxlength="600"
+                  placeholder=" "
+                ></textarea>
+                <span class="textarea-placeholder">Write what this ayah brings up for you</span>
+                <div class="field-meta">
+                  <span id="promptText">What does this ayah make you notice?</span>
+                  <span id="charCounter" aria-live="polite">0/600</span>
+                </div>
+              </div>
+
+              <fieldset class="field-group">
+                <legend>Theme</legend>
+                <div class="theme-grid" id="themeSelector" role="radiogroup" aria-label="Card theme">
+                  <button class="theme-button" type="button" data-theme="sage" role="radio">
+                    <span class="swatch sage"></span>
+                    <span>Sage</span>
+                  </button>
+                  <button class="theme-button" type="button" data-theme="cream" role="radio">
+                    <span class="swatch cream"></span>
+                    <span>Cream</span>
+                  </button>
+                  <button class="theme-button" type="button" data-theme="sand" role="radio">
+                    <span class="swatch sand"></span>
+                    <span>Sand</span>
+                  </button>
+                  <button class="theme-button" type="button" data-theme="sky" role="radio">
+                    <span class="swatch sky"></span>
+                    <span>Sky</span>
+                  </button>
+                  <button class="theme-button" type="button" data-theme="blossom" role="radio">
+                    <span class="swatch blossom"></span>
+                    <span>Blossom</span>
+                  </button>
+                </div>
+              </fieldset>
+
+              <fieldset class="field-group">
+                <legend>Layout</legend>
+                <div
+                  class="composition-grid"
+                  id="compositionSelector"
+                  role="radiogroup"
+                  aria-label="Card layout"
+                >
+                  <button
+                    class="composition-button"
+                    type="button"
+                    data-composition="classic"
+                    role="radio"
+                  >
+                    <span>Classic</span>
+                    <small>Balanced journal card</small>
+                  </button>
+                  <button
+                    class="composition-button"
+                    type="button"
+                    data-composition="editorial"
+                    role="radio"
+                  >
+                    <span>Editorial</span>
+                    <small>Spacious and expressive</small>
+                  </button>
+                  <button
+                    class="composition-button"
+                    type="button"
+                    data-composition="minimal"
+                    role="radio"
+                  >
+                    <span>Minimal</span>
+                    <small>Clean and quiet</small>
+                  </button>
+                </div>
+              </fieldset>
+
+              <div class="action-row" aria-label="Card actions">
+                <button class="button primary-button" id="generateButton" type="button">Refresh card</button>
+                <button class="button accent-button" id="exportButton" type="button">Download PNG</button>
+                <button class="button secondary-button" id="copyReflectionButton" type="button">
+                  Copy reflection
+                </button>
+                <button class="button secondary-button" id="copyCardButton" type="button">
+                  Copy card text
+                </button>
+                <button
+                  class="button secondary-button"
+                  id="shareModeButton"
+                  type="button"
+                  aria-pressed="false"
+                >
+                  Square card
+                </button>
+                <button class="button ghost-button" id="resetButton" type="button">Clear</button>
+                <button class="button ghost-button undo-button" id="undoResetButton" type="button" hidden>
+                  Undo clear
+                </button>
+              </div>
+            </form>
+
+            <p class="status-line" id="statusLine" role="status" aria-live="polite"></p>
+          </section>
+        </section>
+      </main>
+
+      <footer class="site-footer">Made with care for reflection.</footer>
+    </div>
+  </body>
+</html>
